@@ -1,0 +1,28 @@
+version: '3.7'
+
+volumes:
+  mongodata:
+  adaptdata:
+
+services:
+  mongo:
+    build:
+      context: ./mongo
+      dockerfile: Dockerfile
+    volumes:
+      - type: volume
+        source: mongodata
+        target: /data/db
+  adapt_authoring:
+    depends_on:
+      - mongo
+    build:
+      context: ./adapt_framework
+      dockerfile: Dockerfile
+    ports:
+      - "5055:5000"
+    volumes:
+      - type: volume
+        source: adaptdata
+        target: /adapt_framework
+
